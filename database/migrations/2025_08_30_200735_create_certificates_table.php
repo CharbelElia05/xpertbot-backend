@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+  public function up()
+{
+    Schema::create('certificates', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->foreignId('track_id')->constrained()->onDelete('cascade');
+        $table->foreignId('quiz_attempt_id')->constrained()->onDelete('cascade');
+        $table->string('certificate_url');
+        $table->timestamp('issued_at')->useCurrent();
+        $table->timestamps();
+        // A user gets one certificate per track
+        $table->unique(['user_id', 'track_id']);
+    });
+}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('certificates');
+    }
+};
