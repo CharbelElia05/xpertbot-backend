@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +47,34 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    // A user (as instructor) can create many tracks
+    public function instructorTracks(): HasMany
+    {
+        return $this->hasMany(Track::class, 'instructor_id');
+    }
+
+    // A user (student) can be enrolled in many tracks
+    public function enrolledTracks(): BelongsToMany
+    {
+        return $this->belongsToMany(Track::class, 'enrollments');
+    }
+
+    // A user can have progress in many courses
+    public function courseProgress(): HasMany
+    {
+        return $this->hasMany(CourseProgress::class);
+    }
+
+    // A user can have many quiz attempts
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
+
+    // A user can earn many certificates
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
     }
 }
