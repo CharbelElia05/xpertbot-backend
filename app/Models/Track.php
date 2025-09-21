@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,11 +11,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Track extends Model
 {
-       protected $fillable = [
+    use HasFactory;
+
+    protected $fillable = [
         'title',
         'description',
         'instructor_id', // The admin setting the instructor
     ];
+
+    protected $casts = [
+        'instructor_id' => 'integer',
+    ];
+
     // A track belongs to one instructor (a User)
     public function instructor(): BelongsTo
     {
