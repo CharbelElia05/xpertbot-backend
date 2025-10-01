@@ -33,4 +33,36 @@ class Quiz extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    // ✅ ADDED: Quiz has many attempts
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
+
+    // ✅ ADDED: Helper to check if user can attempt quiz
+    public function canUserAttempt($userId): bool
+    {
+        $attemptCount = $this->quizAttempts()
+                            ->where('user_id', $userId)
+                            ->count();
+        
+        return $attemptCount === 0; // Allow only one attempt for now
+    }
+
+    // ✅ ADDED: Get latest attempt by user
+    public function getUserAttempt($userId)
+    {
+        return $this->quizAttempts()
+                    ->where('user_id', $userId)
+                    ->latest()
+                    ->first();
+    }
+
+    // ✅ ADDED: Check if user passed this quiz
+    public function didUserPass($userId): bool
+    {
+        $attempt = $this->getUserAttempt($userId);
+        return $attempt && $attempt->score >= $this->passing_score;
+    }
 }

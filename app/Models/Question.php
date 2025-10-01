@@ -31,4 +31,42 @@ class Question extends Model
     {
         return $this->hasMany(Option::class);
     }
+
+    // ✅ ADDED: Get the correct option for this question
+    public function correctOption()
+    {
+        return $this->options()->where('is_correct', true)->first();
+    }
+
+    // ✅ ADDED: Check if an option is correct
+    public function isOptionCorrect($optionId): bool
+    {
+        $option = $this->options()->where('id', $optionId)->first();
+        return $option && $option->is_correct;
+    }
+
+    // ✅ ADDED: Get all correct options (for multiple correct answers)
+    public function correctOptions()
+    {
+        return $this->options()->where('is_correct', true)->get();
+    }
+
+    // ✅ ADDED: Check if user's answer is correct
+    public function isUserAnswerCorrect($userSelectedOptionId): bool
+    {
+        return $this->isOptionCorrect($userSelectedOptionId);
+    }
+
+    // ✅ ADDED: Scope for questions with options
+    public function scopeWithOptions($query)
+    {
+        return $query->with('options');
+    }
+
+    // ✅ ADDED: Get question type (single/multiple choice based on correct options count)
+    public function getQuestionTypeAttribute(): string
+    {
+        $correctCount = $this->options()->where('is_correct', true)->count();
+        return $correctCount > 1 ? 'multiple' : 'single';
+    }
 }

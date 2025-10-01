@@ -26,4 +26,22 @@ class Option extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    // ✅ ADDED: Simple check if this option is correct
+    public function isCorrect(): bool
+    {
+        return $this->is_correct;
+    }
+
+    // ✅ ADDED: Simple scope to get correct options
+    public function scopeCorrect($query)
+    {
+        return $query->where('is_correct', true);
+    }
+
+    // ✅ ADDED: Simple scope to get incorrect options
+    public function scopeIncorrect($query)
+    {
+        return $query->where('is_correct', false);
+    }
 }

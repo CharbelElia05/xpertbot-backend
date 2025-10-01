@@ -16,7 +16,7 @@ class Track extends Model
     protected $fillable = [
         'title',
         'description',
-        'instructor_id', // The admin setting the instructor
+        'instructor_id',
     ];
 
     protected $casts = [
@@ -51,5 +51,41 @@ class Track extends Model
     public function certificates(): HasMany
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    // ✅ ADDED: Check if user is enrolled in this track
+    public function isUserEnrolled($userId): bool
+    {
+        return $this->students()->where('user_id', $userId)->exists();
+    }
+
+    // ✅ ADDED: Get enrollment count
+    public function getEnrollmentCountAttribute(): int
+    {
+        return $this->students()->count();
+    }
+
+    // ✅ ADDED: Check if track has a quiz
+    public function hasQuiz(): bool
+    {
+        return $this->quiz !== null;
+    }
+
+    // ✅ ADDED: Get completed users count
+    public function getCompletedUsersCount(): int
+    {
+        return $this->certificates()->count();
+    }
+
+    // ✅ ADDED: Check if user completed this track
+    public function isCompletedByUser($userId): bool
+    {
+        return $this->certificates()->where('user_id', $userId)->exists();
+    }
+
+    // ✅ ADDED: Get user's certificate for this track
+    public function getUserCertificate($userId)
+    {
+        return $this->certificates()->where('user_id', $userId)->first();
     }
 }
