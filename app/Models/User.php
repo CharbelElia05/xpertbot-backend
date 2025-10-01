@@ -12,14 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
-
-    // Role constants
-    const ROLE_STUDENT = 'student';
-    const ROLE_INSTRUCTOR = 'instructor';
-    const ROLE_ADMIN = 'admin';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -84,36 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Certificate::class);
     }
+    public function enrollments(): HasMany
+{
+    return $this->hasMany(Enrollment::class);
+}
 
-    // Helper methods for role checking
-    public function isStudent(): bool
-    {
-        return $this->role === self::ROLE_STUDENT;
-    }
-
-    public function isInstructor(): bool
-    {
-        return $this->role === self::ROLE_INSTRUCTOR;
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
-    // Scope methods for easy querying
-    public function scopeStudents($query)
-    {
-        return $query->where('role', self::ROLE_STUDENT);
-    }
-
-    public function scopeInstructors($query)
-    {
-        return $query->where('role', self::ROLE_INSTRUCTOR);
-    }
-
-    public function scopeAdmins($query)
-    {
-        return $query->where('role', self::ROLE_ADMIN);
-    }
 }

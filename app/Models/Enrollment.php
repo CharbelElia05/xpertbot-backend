@@ -18,14 +18,7 @@ class Enrollment extends Model
         'completed_at',
     ];
 
-    protected $casts = [
-        'user_id' => 'integer',
-        'track_id' => 'integer',
-        'current_course_id' => 'integer',
-        'enrolled_at' => 'datetime',
-        'completed_at' => 'datetime',
-    ];
-
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -14,44 +14,21 @@ class Course extends Model
     protected $fillable = [
         'track_id',
         'title',
-        'description',     // ✅ ADDED
+        'description',
         'content_type',
         'content_url',
         'order_number',
-        'duration',        // ✅ ADDED
+        'duration',
     ];
 
-    protected $casts = [
-        'order_number' => 'integer',
-        'duration' => 'integer', // ✅ ADDED
-    ];
-
-    // A course belongs to one track
+    // Relationships
     public function track(): BelongsTo
     {
         return $this->belongsTo(Track::class);
     }
 
-    // ✅ ADDED: A course can have many progress records
     public function courseProgress(): HasMany
     {
         return $this->hasMany(CourseProgress::class);
-    }
-
-    // ✅ ADDED: Get users who completed this course
-    public function completedUsers()
-    {
-        return $this->belongsToMany(User::class, 'course_progress')
-                    ->wherePivot('completed_at', '!=', null)
-                    ->withTimestamps();
-    }
-
-    // ✅ ADDED: Helper method to check completion
-    public function isCompletedByUser($userId): bool
-    {
-        return $this->courseProgress()
-                    ->where('user_id', $userId)
-                    ->whereNotNull('completed_at')
-                    ->exists();
     }
 }

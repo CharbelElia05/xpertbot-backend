@@ -19,7 +19,6 @@ return new class extends Migration
         $table->string('certificate_url');
         $table->timestamp('issued_at')->useCurrent();
         $table->timestamps();
-        // A user gets one certificate per track
         $table->unique(['user_id', 'track_id']);
     });
 }

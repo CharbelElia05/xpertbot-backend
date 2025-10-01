@@ -16,19 +16,12 @@ class CourseProgress extends Model
         'completed_at',
     ];
 
-    protected $casts = [
-        'user_id' => 'integer',
-        'course_id' => 'integer',
-        'completed_at' => 'datetime',
-    ];
-
-    // Each progress entry belongs to a user
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // Each progress entry belongs to a course
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

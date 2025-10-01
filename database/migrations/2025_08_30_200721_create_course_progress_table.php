@@ -17,7 +17,6 @@ return new class extends Migration
         $table->foreignId('course_id')->constrained()->onDelete('cascade');
         $table->timestamp('completed_at')->nullable();
         $table->timestamps();
-        // A user can only complete a course once
         $table->unique(['user_id', 'course_id']);
     });
 }

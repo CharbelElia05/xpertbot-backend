@@ -18,26 +18,17 @@ class Certificate extends Model
         'issued_at',
     ];
 
-    protected $casts = [
-        'user_id' => 'integer',
-        'track_id' => 'integer',
-        'quiz_attempt_id' => 'integer',
-        'issued_at' => 'datetime',
-    ];
-
-    // Certificate belongs to a user
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // Certificate belongs to a track
     public function track(): BelongsTo
     {
         return $this->belongsTo(Track::class);
     }
 
-    // Certificate is linked to a quiz attempt
     public function quizAttempt(): BelongsTo
     {
         return $this->belongsTo(QuizAttempt::class);
