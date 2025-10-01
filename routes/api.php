@@ -19,4 +19,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('tracks', TrackController::class);
     Route::apiResource('course-progress', CourseProgressController::class);
+    Route::apiResource('quizzes', QuizController::class);   
+    Route::apiResource('questions', QuestionController::class);
+    Route::apiResource('options', OptionController::class);
+    Route::apiResource('quiz-attempts', QuizAttemptController::class);
+    Route::apiResource('certificates', CertificateController::class);
+    Route::apiResource('enrollments', EnrollmentController::class);
+    
 });
